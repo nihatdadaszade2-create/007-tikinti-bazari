@@ -83,5 +83,7 @@ export const fullAddress = `${site.address.street}, ${site.address.landmark}, ${
 
 /** Build an absolute URL when the site URL is known, otherwise a root-relative path. */
 export function absoluteUrl(path = "/"): string {
-  return site.url ? `${site.url}${path}` : path;
+  // The GitHub Pages build uses trailing slashes on page URLs (see next.config.ts).
+  const p = process.env.GITHUB_PAGES === "true" && !/\.[a-z0-9]+$/i.test(path) && !path.endsWith("/") ? `${path}/` : path;
+  return site.url ? `${site.url}${p}` : p;
 }

@@ -1,7 +1,9 @@
 import type { MetadataRoute } from "next";
-import { site } from "@/config/site";
+import { site, absoluteUrl } from "@/config/site";
 import { categories } from "@/data/categories";
 import { products } from "@/data/products";
+
+export const dynamic = "force-static";
 
 /**
  * /sitemap.xml — sitemaps require absolute URLs, so entries are emitted only once
@@ -9,10 +11,9 @@ import { products } from "@/data/products";
  */
 export default function sitemap(): MetadataRoute.Sitemap {
   if (!site.url) return [];
-  const base = site.url;
   const now = new Date();
   const page = (path: string, priority: number, changeFrequency: "weekly" | "monthly" = "weekly") => ({
-    url: `${base}${path}`,
+    url: absoluteUrl(path),
     lastModified: now,
     changeFrequency,
     priority,

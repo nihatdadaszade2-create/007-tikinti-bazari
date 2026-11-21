@@ -18,10 +18,13 @@ export function pageMetadata({
   image?: string;
   noIndex?: boolean;
 }): Metadata {
+  // Absolute URLs keep the base path (e.g. /007-tikinti-bazari on GitHub Pages);
+  // root-relative paths would be resolved against the domain root and lose it.
+  image = absoluteUrl(image);
   return {
     title,
     description,
-    alternates: { canonical: path },
+    alternates: { canonical: absoluteUrl(path) },
     openGraph: {
       type: "website",
       locale: "az_AZ",
